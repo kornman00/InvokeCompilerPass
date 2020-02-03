@@ -1,0 +1,31 @@
+(global boolean first true) // this actually ends up the second line with redirected stdout...
+
+#if defined(NDEBUG)
+	#define IS_DEBUG 1
+	#define IF_DEBUG_PRINT(str)
+#else
+	#define IS_DEBUG 0
+	#define IF_DEBUG_PRINT(str) \
+		(if debug				\
+			(print str)			\
+		) 
+#endif
+
+#define CAMERA_SET_POINT_AND_SLEEP(point_name)	\
+	(camera_set point_name 400)					\
+	(sleep 200)
+
+(global boolean debug IS_DEBUG)
+
+(script startup entry_point
+	IF_DEBUG_PRINT("Hello, World")
+	;*
+	(camera_set point_1 400)
+	(sleep 200)
+	(camera_set point_2 400)
+	(sleep 200)
+	*;
+	CAMERA_SET_POINT_AND_SLEEP(point_1)
+	CAMERA_SET_POINT_AND_SLEEP(point_2)
+	IF_DEBUG_PRINT("Good bye, World")
+)
